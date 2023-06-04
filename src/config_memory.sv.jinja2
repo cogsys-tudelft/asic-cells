@@ -1,0 +1,57 @@
+module config_memory
+    #(
+        parameter MESSAGE_BIT_WIDTH = 32,
+        parameter START_ADDRESS_BIT_WIDTH = 16{% if parameters != [] %},
+        {% for name in parameters %}
+        parameter {{name}} = 1{% if not loop.last %},
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
+    )(
+        input SCK,
+        input RST_async,
+
+        input config_message_ready,
+        input [START_ADDRESS_BIT_WIDTH-1:0] spi_config_address,
+        input [MESSAGE_BIT_WIDTH-1:0] config_spi_data_in,
+
+        {% for bit_width, name, _ in config_sizes_and_names %}
+            {% if bit_width is iterable and bit_width is not string %}
+        output reg [{{bit_width[0]}}-1:0] {{name}} {% if bit_width[1] is iterable and bit_width[1] is not string %}[{{bit_width[1][0]}}-1:{{bit_width[1][1]}}]{% else %}[{{bit_width[1]}}-1:0]{% endif %}{{ "," if not loop.last }}
+            {% else %}
+        output reg {% if bit_width != 1 %}[{{bit_width}}-1:0] {% endif %}{{name}}{{ "," if not loop.last }}
+            {% endif %}
+        {% endfor %}
+    );
+
+    always @(posedge SCK, posedge RST_async) begin
+        if (RST_async) begin
+            {% for bit_width, name, requires_reset in config_sizes_and_names %}
+                {% if requires_reset %}
+                    {% if bit_width is iterable and bit_width is not string %}
+                        {% if bit_width[1] is iterable and bit_width[1] is not string %}
+                            {% for i in range(bit_width[1][1], bit_width[1][0]) %}
+            {{name}}[{{i}}] <= 0;
+                            {% endfor %}
+                        {% else %}
+                            {% for i in range(bit_width[1]) %}
+            {{name}}[{{i}}] <= 0;
+                            {% endfor %}
+                        {% endif %}
+                    {% else %}
+            {{name}} <= 0;
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        end else begin
+            if (config_message_ready) begin
+                case (spi_config_address)
+                    {% for address, name, bit_width in config_address_mapping %}
+                    {{address}}: {{name}} <= config_spi_data_in{% if bit_width != 1 %}[{{bit_width}}-1:0]{% else %}[0]{% endif %};
+                    {% endfor %}
+                endcase
+            end
+        end
+    end
+endmodule

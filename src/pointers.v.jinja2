@@ -1,0 +1,23 @@
+module pointers
+    #(parameter MESSAGE_BIT_WIDTH = 32, START_ADDRESS_BIT_WIDTH = 16)
+    (
+        input clk,
+        
+        input read_sync,
+        input code_is_pointers,
+
+        input [START_ADDRESS_BIT_WIDTH-1:0] spi_address,
+        output reg [MESSAGE_BIT_WIDTH-1:0] pointer_spi_data_out
+    );
+
+    always @(posedge clk) begin
+        if (code_is_pointers && read_sync) begin
+            case (spi_address)
+                {% for name in pointer_names%}
+                {{ loop.index0 }}: pointer_spi_data_out <= {{ name }};
+                {% endfor %}
+            endcase
+        end
+    end
+
+endmodule
