@@ -1,0 +1,35 @@
+# Package metadata. Required.
+package:
+  # The name of the package. Required.
+  name: open-asic
+
+  # The list of package authors and contributors. Optional.
+  # By convention, authors should be listed in the form shown below.
+  authors: ["Douwe den Blanken <douwedb@gmail.com>"]
+
+# Freeze any dependency updates. Optional. False if omitted.
+# Useful for chip packages. Once the chip is in final tapeout mode, and
+# dependency updates would require disastrous amounts of re-verification.
+frozen: false
+
+# List of source files in this package. Optional.
+sources:
+  # - target: test
+  #   files:
+  #     - test/floating_point_adder_tb.v
+  #     - test/floating_point_multiplier_tb.v
+  #     - test/leading_one_detector_tb.v
+
+  - target: rtl
+    files:
+      - src/clock/clock_divider.v
+      - src/clock/frequency_divider_stage.v
+      - src/double_latching_barrier.v
+      - src/generic_double_port_tsmc_sram.sv
+      - src/generic_single_port_tsmc_sram.sv
+      - src/high_speed_in_bus.v
+      - src/high_speed_out_bus.v
+      - src/memory_manager.v
+      - src/spi_client.sv
+      - src/spi_clock_barrier_crossing.v
+      - src/triple_toggle_barrier.v
