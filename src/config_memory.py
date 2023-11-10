@@ -2,14 +2,14 @@ from jinja2 import Template
 
 # EVERY ENTRY IN THIS LIST BELOW SHOULD HAVE A BIT_WIDTH OF MAXIMUM THE MESSAGE BIT WIDTH!!!
 
+ConfigurationList = List[Tuple[Union[Union[int, str] , Tuple[Union[str, int], Union[int, Tuple[int, int]]]], str, bool]]
+
 # bit_width [int/str] | (bit_width [int/str], count [int] | (max_index [int], start_index [int])), name, requires_reset
-config_sizes_and_names = [
+config_sizes_and_names: ConfigurationList = [
     (1, "enable_processing", True),
     ("MODE_BIT_WIDTH", "mode", True),
     (1, "continuous_processing", True),
     (1, "enable_clock_divider", True),
-    # (5, "shots", True),
-    # (1, "regression", True),
     ("LAYER_WIDTH", "num_conv_layers_minus_one", False),
     ("LAYER_WIDTH", "num_conv_and_linear_layers", False),
     (("KERNEL_WIDTH", 32), "kernel_size_per_layer", False),

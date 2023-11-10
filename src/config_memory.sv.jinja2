@@ -12,8 +12,8 @@ module config_memory
         input SCK,
         input RST_async,
 
-        input config_message_ready,
-        input [START_ADDRESS_BIT_WIDTH-1:0] spi_config_address,
+        input config_data_ready,
+        input [START_ADDRESS_BIT_WIDTH-1:0] current_config_address,
         input [MESSAGE_BIT_WIDTH-1:0] config_spi_data_in,
 
         {% for bit_width, name, _ in config_sizes_and_names %}
@@ -45,8 +45,8 @@ module config_memory
                 {% endif %}
             {% endfor %}
         end else begin
-            if (config_message_ready) begin
-                case (spi_config_address)
+            if (config_data_ready) begin
+                case (current_config_address)
                     {% for address, name, bit_width in config_address_mapping %}
                     {{address}}: {{name}} <= config_spi_data_in{% if bit_width != 1 %}[{{bit_width}}-1:0]{% else %}[0]{% endif %};
                     {% endfor %}

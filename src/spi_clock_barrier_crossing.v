@@ -1,4 +1,5 @@
 `include "double_latching_barrier.v"
+`include "triple_toggle_barrier.v"
 
 module spi_clock_barrier_crossing
     (
@@ -7,8 +8,8 @@ module spi_clock_barrier_crossing
 
         input enable_configuration,
 
-        input out_message_ready,
-        input load_new_in_message,
+        input MOSI_data_ready,
+        input load_MISO_data,
 
         output write_new,
         output read_sync
@@ -18,11 +19,12 @@ module spi_clock_barrier_crossing
 
     double_latching_barrier double_latching_barrier_read (
         .clk(clk), .rst(rst), .enable(enable_configuration),
-        .in(load_new_in_message), .out(read_sync)
+        .in(load_MISO_data), .out(read_sync)
     );
 
     // Write barrier ------------------------------------------------------------------------------
 
+    // Below text considers the wires inside of the 
     // _sync_intermediate is the first register of the double sampling barrier,
     // _sync is the second (which you can use in the clk clock domain without
     // risking metastability). However, it stays high for more than a cycle in
@@ -31,23 +33,9 @@ module spi_clock_barrier_crossing
     // high only for one clock cycle per SPI transaction, which I use to
     // trigger a write to the SRAM.
 
-    wire write_sync;
-
-    double_latching_barrier double_latching_barrier_write (
+    triple_toggle_barrier triple_toggle_barrier_write (
         .clk(clk), .rst(rst), .enable(enable_configuration),
-        .in(out_message_ready), .out(write_sync)
+        .in(MOSI_data_ready), .out(write_new)
     );
-
-    reg write_delete;
-
-    always @(posedge clk, posedge rst) begin
-        if (rst) begin
-            write_delete <= 0;
-        end else if (enable_configuration) begin
-            write_delete <= write_sync;
-        end
-    end
-
-    assign write_new = write_sync & ~write_delete;
 
 endmodule
