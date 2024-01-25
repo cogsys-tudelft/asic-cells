@@ -1,4 +1,4 @@
-`include "domain_crossing/double_latching_barrier.v"
+`include "double_latching_barrier.v"
 
 module high_speed_in_bus (
     input clk,
