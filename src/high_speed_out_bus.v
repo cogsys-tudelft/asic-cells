@@ -1,25 +1,26 @@
-module high_speed_out_bus
-    #(parameter HIGH_SPEED_OUT_PINS = 8, parameter SENT_COUNTER_BIT_WIDTH=4)
-    (
-        input clk,
-        input rst,
+module high_speed_out_bus #(
+    parameter HIGH_SPEED_OUT_PINS = 8,
+    parameter SENT_COUNTER_BIT_WIDTH = 4
+) (
+    input clk,
+    input rst,
 
-        input in_idle,
-        input sending,
-        input will_stop_sending, // next_state != `SENDING
-        
-        input [SENT_COUNTER_BIT_WIDTH-1:0] num_sends,
+    input in_idle,
+    input sending,
+    input will_stop_sending, // next_state != `SENDING
 
-        input [HIGH_SPEED_OUT_PINS-1:0] in,
+    input [SENT_COUNTER_BIT_WIDTH-1:0] num_sends,
 
-        output reg request,
-        input acknowledge,
+    input [HIGH_SPEED_OUT_PINS-1:0] in,
 
-        output reg [HIGH_SPEED_OUT_PINS-1:0] out,
-        output reg [SENT_COUNTER_BIT_WIDTH-1:0] sent_counter,
+    output reg request,
+    input acknowledge,
 
-        output done_sending
-    );
+    output reg [HIGH_SPEED_OUT_PINS-1:0] out,
+    output reg [SENT_COUNTER_BIT_WIDTH-1:0] sent_counter,
+
+    output done_sending
+);
 
     wire acknowledge_sync;
     double_latching_barrier double_latching_barrier_acknowledge (

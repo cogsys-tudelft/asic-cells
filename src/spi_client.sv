@@ -1,35 +1,35 @@
 module spi_client
-    /**
+/**
      * We do not use an enable signal for the SPI client, as that enable signal would be clocked on the
      * internal clock domain, causing issues with the logic that is clocked on the external SPI clock.
      * Instead what we do is, send out a in_idle signal via a separate wire. When this signal is high,
      * the SPI server knows that the SPI client will respond. When this signal is low, the SPI server
      * should not drive the external clock nor the MOSI line.
      */
-    #(
-        parameter MESSAGE_BIT_WIDTH = 32,
-        parameter CODE_BIT_WIDTH = 4,
-        parameter START_ADDRESS_BIT_WIDTH = 16,
-        localparam NUM_TRANSACTIONS_BIT_WIDTH = MESSAGE_BIT_WIDTH - CODE_BIT_WIDTH - START_ADDRESS_BIT_WIDTH - 1
-    )(
-        input RST_async,
+#(
+    parameter MESSAGE_BIT_WIDTH = 32,
+    parameter CODE_BIT_WIDTH = 4,
+    parameter START_ADDRESS_BIT_WIDTH = 16,
+    localparam NUM_TRANSACTIONS_BIT_WIDTH = MESSAGE_BIT_WIDTH - CODE_BIT_WIDTH - START_ADDRESS_BIT_WIDTH - 1
+) (
+    input RST_async,
 
-        input SCK,
-        output MISO,
-        input MOSI,
+    input  SCK,
+    output MISO,
+    input  MOSI,
 
-        output [CODE_BIT_WIDTH-1:0] code,
-        output reg [START_ADDRESS_BIT_WIDTH-1:0] current_address,
+    output [CODE_BIT_WIDTH-1:0] code,
+    output reg [START_ADDRESS_BIT_WIDTH-1:0] current_address,
 
-        input [MESSAGE_BIT_WIDTH-1:0] MISO_data,
-        output reg load_MISO_data,
-        output reg [MESSAGE_BIT_WIDTH-1:0] MOSI_data,
-        output reg MOSI_data_ready,
+    input [MESSAGE_BIT_WIDTH-1:0] MISO_data,
+    output reg load_MISO_data,
+    output reg [MESSAGE_BIT_WIDTH-1:0] MOSI_data,
+    output reg MOSI_data_ready,
 
-        output config_data_ready,
-        output [START_ADDRESS_BIT_WIDTH-1:0] current_config_address,
-        output [MESSAGE_BIT_WIDTH-1:0] config_data
-    );
+    output config_data_ready,
+    output [START_ADDRESS_BIT_WIDTH-1:0] current_config_address,
+    output [MESSAGE_BIT_WIDTH-1:0] config_data
+);
 
     // Local parameters ---------------------------------------------------------------------------
 
@@ -39,18 +39,18 @@ module spi_client
     // Check parameters ---------------------------------------------------------------------------
 
     if (NUM_TRANSACTIONS_BIT_WIDTH < 0) begin
-        ERROR__MESSAGE_BIT_WIDTH_must_be_at_least_CODE_BIT_WIDTH_plus_START_ADDRESS_BIT_WIDTH_plus_1 a();
-    end else if(2**$clog2(MESSAGE_BIT_WIDTH) != MESSAGE_BIT_WIDTH) begin
-        ERROR__MESSAGE_BIT_WIDTH_must_be_a_power_of_two a();
+        ERROR__MESSAGE_BIT_WIDTH_must_be_at_least_CODE_BIT_WIDTH_plus_START_ADDRESS_BIT_WIDTH_plus_1 a ();
+    end else if (2 ** $clog2(MESSAGE_BIT_WIDTH) != MESSAGE_BIT_WIDTH) begin
+        ERROR__MESSAGE_BIT_WIDTH_must_be_a_power_of_two a ();
     end else if (NUM_TRANSACTIONS_BIT_WIDTH > START_ADDRESS_BIT_WIDTH) begin
-        ERROR__NUM_TRANSACTIONS_BIT_WIDTH_must_be_less_than_or_equal_to_START_ADDRESS_BIT_WIDTH a();
+        ERROR__NUM_TRANSACTIONS_BIT_WIDTH_must_be_less_than_or_equal_to_START_ADDRESS_BIT_WIDTH a ();
     end
 
     // Registers ----------------------------------------------------------------------------------
 
-    reg [SPI_COUNTER_BIT_WIDTH-1:0] spi_counter; // TODO: why not START_ADDRESS_BIT_WIDTH-1?
+    reg [SPI_COUNTER_BIT_WIDTH-1:0] spi_counter;  // TODO: why not START_ADDRESS_BIT_WIDTH-1?
     reg [MESSAGE_BIT_WIDTH-1:0] spi_shift_reg_out, spi_shift_reg_in;
-    reg [MESSAGE_BIT_WIDTH-1:0] instruction_message; // Format of the message: read(1)/write(0) | code | start_address | num_transactionss
+    reg [MESSAGE_BIT_WIDTH-1:0] instruction_message;  // Format of the message: read(1)/write(0) | code | start_address | num_transactionss
 
     // Wires for combinational logic --------------------------------------------------------------
 
@@ -60,7 +60,7 @@ module spi_client
     wire message_complete;
     wire received_instruction_message;
     wire [NUM_TRANSACTIONS_BIT_WIDTH-1:0] num_transactions, num_transactions_from_message;
-    wire at_least_one_data_message; // At least one complete message with data has been received
+    wire at_least_one_data_message;  // At least one complete message with data has been received
     wire [MESSAGE_BIT_WIDTH-1:0] new_shift_reg_out;
     wire within_message_counter_zero;
 
@@ -75,7 +75,7 @@ module spi_client
     assign {read, code, start_address, num_transactions_from_message} = instruction_message;
     assign write = ~read;
 
-    assign message_complete = &within_message_counter; // If the last WITHIN_MESSAGE_COUNTER_BIT_WIDTH bits are all 1, then the message is completely written
+    assign message_complete = &within_message_counter;  // If the last WITHIN_MESSAGE_COUNTER_BIT_WIDTH bits are all 1, then the message is completely written
     assign received_instruction_message = spi_counter == MESSAGE_BIT_WIDTH - 1;
     assign num_transactions = received_instruction_message ? spi_shift_reg_in[NUM_TRANSACTIONS_BIT_WIDTH-1:0] : num_transactions_from_message;
     assign at_least_one_data_message = |transaction_counter;
@@ -88,7 +88,7 @@ module spi_client
     always @(negedge SCK, posedge RST_async) begin
         if (RST_async) begin
             spi_counter <= 0;
-        // If 32 SPI clockcycles have passed and the total number of words has been written
+            // If 32 SPI clockcycles have passed and the total number of words has been written
         end else if (message_complete && (transaction_counter >= num_transactions)) begin
             spi_counter <= 0;
         end else begin
@@ -104,7 +104,7 @@ module spi_client
             instruction_message <= spi_shift_reg_in;
         end
     end
-    
+
     always @(posedge SCK) begin
         spi_shift_reg_in <= {spi_shift_reg_in[MESSAGE_BIT_WIDTH-2:0], MOSI};
     end
@@ -115,25 +115,25 @@ module spi_client
 
             load_MISO_data <= 0;
             MOSI_data_ready <= 0;
-        // If the main has sent one complete data message, write the data to the output register
+            // If the main has sent one complete data message, write the data to the output register
         end else if (write && message_complete && at_least_one_data_message) begin
             spi_shift_reg_out <= 0;
             current_address <= start_address + transaction_counter - 1;
             MOSI_data <= spi_shift_reg_in;
 
             MOSI_data_ready <= 1;
-        // If we have just received a new read instruction
+            // If we have just received a new read instruction
         end else if (spi_shift_reg_in[MESSAGE_BIT_WIDTH-1] && received_instruction_message) begin
             spi_shift_reg_out <= new_shift_reg_out;
             current_address <= spi_shift_reg_in[START_ADDRESS_BIT_WIDTH+NUM_TRANSACTIONS_BIT_WIDTH-1:NUM_TRANSACTIONS_BIT_WIDTH];
 
             load_MISO_data <= 1;
-        // If the main just received a complete data message and we stil have more transactions to do
+            // If the main just received a complete data message and we stil have more transactions to do
         end else if (read && message_complete && at_least_one_data_message && (transaction_counter < num_transactions)) begin
             current_address <= start_address + transaction_counter;
 
             load_MISO_data <= 1;
-        // If we are in the first clockcycle after receiving the complete instruction message and we are reading from client to main
+            // If we are in the first clockcycle after receiving the complete instruction message and we are reading from client to main
         end else if (read && within_message_counter_zero && at_least_one_data_message) begin
             spi_shift_reg_out <= MISO_data << 1;
 
@@ -155,5 +155,5 @@ module spi_client
     assign config_data_ready = write && (code == 0) && message_complete && at_least_one_data_message;
     assign current_config_address = start_address + transaction_counter - 1;
     assign config_data = {spi_shift_reg_in[MESSAGE_BIT_WIDTH-2:0], MOSI};
-    
+
 endmodule

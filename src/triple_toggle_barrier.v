@@ -3,25 +3,28 @@
 
 `include "double_latching_barrier.v"
 
-module triple_toggle_barrier
-    #(parameter AT_POSEDGE_RST = 1)
-    (
-        input clk,
-        input rst,
+module triple_toggle_barrier #(
+    parameter AT_POSEDGE_RST = 1
+) (
+    input clk,
+    input rst,
 
-        input enable,
+    input enable,
 
-        input in,
-        output out
-    );
+    input  in,
+    output out
+);
 
     wire in_sync;
 
     double_latching_barrier #(
         .AT_POSEDGE_RST(AT_POSEDGE_RST)
     ) double_latching_barrier_inst (
-        .clk(clk), .rst(rst), .enable(enable),
-        .in(in), .out(in_sync)
+        .clk(clk),
+        .rst(rst),
+        .enable(enable),
+        .in(in),
+        .out(in_sync)
     );
 
     reg in_delete;

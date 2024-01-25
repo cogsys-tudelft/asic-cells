@@ -1,25 +1,27 @@
 `include "double_latching_barrier.v"
 `include "triple_toggle_barrier.v"
 
-module spi_clock_barrier_crossing
-    (
-        input clk,
-        input rst,
+module spi_clock_barrier_crossing (
+    input clk,
+    input rst,
 
-        input enable_configuration,
+    input enable_configuration,
 
-        input MOSI_data_ready,
-        input load_MISO_data,
+    input MOSI_data_ready,
+    input load_MISO_data,
 
-        output write_new,
-        output read_sync
-    );
+    output write_new,
+    output read_sync
+);
 
     // Read barrier -------------------------------------------------------------------------------
 
     double_latching_barrier double_latching_barrier_read (
-        .clk(clk), .rst(rst), .enable(enable_configuration),
-        .in(load_MISO_data), .out(read_sync)
+        .clk(clk),
+        .rst(rst),
+        .enable(enable_configuration),
+        .in(load_MISO_data),
+        .out(read_sync)
     );
 
     // Write barrier ------------------------------------------------------------------------------
@@ -34,8 +36,11 @@ module spi_clock_barrier_crossing
     // trigger a write to the SRAM.
 
     triple_toggle_barrier triple_toggle_barrier_write (
-        .clk(clk), .rst(rst), .enable(enable_configuration),
-        .in(MOSI_data_ready), .out(write_new)
+        .clk(clk),
+        .rst(rst),
+        .enable(enable_configuration),
+        .in(MOSI_data_ready),
+        .out(write_new)
     );
 
 endmodule

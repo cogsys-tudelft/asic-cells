@@ -4,26 +4,25 @@
 `include "spi_clock_barrier_crossing.v"
 `include "pointers.v"
 
-module skeleton
-    (
-        input clk_ext,
-        input rst_async,
-        input enable_clk_int,
+module skeleton (
+    input clk_ext,
+    input rst_async,
+    input enable_clk_int,
 
-        input SCK,
-        output MISO,
-        input MOSI,
+    input  SCK,
+    output MISO,
+    input  MOSI,
 
-        output clk_int_div,
+    output clk_int_div,
 
-        input [HIGH_SPEED_IN_PINS-1:0] data_in,
-        input in_request,
-        output out_acknowledge,
+    input [HIGH_SPEED_IN_PINS-1:0] data_in,
+    input in_request,
+    output out_acknowledge,
 
-        output [HIGH_SPEED_OUT_PINS-1:0] data_out,
-        output out_request,
-        input in_acknowledge
-    );
+    output [HIGH_SPEED_OUT_PINS-1:0] data_out,
+    output out_request,
+    input in_acknowledge
+);
 
     // ============================================================================================
     // Configuration parameters
@@ -31,7 +30,7 @@ module skeleton
 
     localparam MESSAGE_BIT_WIDTH = 32;
     localparam CODE_BIT_WIDTH = 4;
-    localparam START_ADDRESS_BIT_WIDTH = 16; // TODO: rename this parameter
+    localparam START_ADDRESS_BIT_WIDTH = 16;  // TODO: rename this parameter
 
     // ============================================================================================
     // Wires and registers
@@ -101,7 +100,7 @@ module skeleton
 
         .enable(1'b1),
 
-        .in(rst_async),
+        .in (rst_async),
         .out(rst_sync)
     );
 
@@ -115,7 +114,7 @@ module skeleton
 
         .enable(1'b1),
 
-        .in(cfg.enable_processing),
+        .in (cfg.enable_processing),
         .out(enable_processing_sync)
     );
 
@@ -176,7 +175,8 @@ module skeleton
         if (read_sync) begin
             if (code_is_pointers) begin
                 in_message <= pointers_spi_data_out;
-            end if (code_is_weight) begin
+            end
+            if (code_is_weight) begin
                 in_message <= weight_spi_data_out;
             end else if (code_is_bias) begin
                 in_message <= bias_spi_data_out;
@@ -201,7 +201,7 @@ module skeleton
         .RST_async(rst_async),
 
         .config_message_ready(config_message_ready),
-        .spi_config_address(spi_config_address), // TODO: can reduce the address bitwidth accordingly here
+        .spi_config_address(spi_config_address),  // TODO: can reduce the address bitwidth accordingly here
         .config_spi_data_in(spi_out_config_message)
     );
 

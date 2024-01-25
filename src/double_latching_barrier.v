@@ -2,21 +2,22 @@
 `define __DOUBLE_LATCHING_BARRIER_V__
 
 module double_latching_barrier
-    /**
+/**
      * Use this module only for clock domain crossing or for creating a synchronous
      * input from an asynchronous input signal (into a chip). For regular double delays
      * via a register, `double_delay_register.v` should be used.
      */
-    #(parameter AT_POSEDGE_RST = 1)
-    (
-        input clk,
-        input rst,
+#(
+    parameter AT_POSEDGE_RST = 1
+) (
+    input clk,
+    input rst,
 
-        input enable,
+    input enable,
 
-        input in,
-        output reg out
-    );
+    input in,
+    output reg out
+);
 
     // Prefixed and suffixed with __ to make sure the structural simulation in QuestaSim
     // can handle the clock-domain crossing.
