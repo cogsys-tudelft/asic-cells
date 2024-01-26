@@ -17,7 +17,7 @@ module single_port_tsmc_sram #(
 
     // Control and data inputs
     input CEB,  // "Chip enable, active low for SRAM operation; active high for fuse data setting"
-    input WEB,  // Write enable: for writing, WEB is low; for reading, WEB is high
+    input WEB,  // Write enable: WEB is low for writing; for reading, WEB is high
     input [AddressWidth-1:0] A,  // Address bus
     input [WIDTH-1:0] D,  // Data input bus (write)
     input [WIDTH-1:0] M,  // Mask bus (overwite = 0, otherwise = 1)

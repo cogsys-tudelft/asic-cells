@@ -7,6 +7,7 @@ from cocotb.binary import BinaryValue
 
 PERIOD = 1
 
+
 def set_write(dut, address, data, mask):
     dut.CEB.value = 0
     dut.WEB .value= 0
