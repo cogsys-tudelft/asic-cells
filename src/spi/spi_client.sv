@@ -1,12 +1,11 @@
-module spi_client
 /**
-     * We do not use an enable signal for the SPI client, as that enable signal would be clocked on the
-     * internal clock domain, causing issues with the logic that is clocked on the external SPI clock.
-     * Instead what we do is, send out a in_idle signal via a separate wire. When this signal is high,
-     * the SPI server knows that the SPI client will respond. When this signal is low, the SPI server
-     * should not drive the external clock nor the MOSI line.
-     */
-#(
+ * We do not use an enable signal for the SPI client, as that enable signal would be clocked on the
+ * internal clock domain, causing issues with the logic that is clocked on the external SPI clock.
+ * Instead what we do is, send out a in_idle signal via a separate wire. When this signal is high,
+ * the SPI server knows that the SPI client will respond. When this signal is low, the SPI server
+ * should not drive the external clock nor the MOSI line.
+ */
+module spi_client #(
     parameter MESSAGE_BIT_WIDTH = 32,
     parameter CODE_BIT_WIDTH = 4,
     parameter START_ADDRESS_BIT_WIDTH = 16,

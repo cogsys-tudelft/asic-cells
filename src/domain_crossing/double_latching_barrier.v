@@ -1,13 +1,12 @@
 `ifndef __DOUBLE_LATCHING_BARRIER_V__
 `define __DOUBLE_LATCHING_BARRIER_V__
 
-module double_latching_barrier
 /**
-     * Use this module only for clock domain crossing or for creating a synchronous
-     * input from an asynchronous input signal (into a chip). For regular double delays
-     * via a register, `double_delay_register.v` should be used.
-     */
-#(
+ * Use this module only for clock domain crossing or for creating a synchronous
+ * input from an asynchronous input signal (into a chip). For regular double delays
+ * via a register, `double_delay_register.v` should be used.
+ */
+module double_latching_barrier #(
     parameter AT_POSEDGE_RST = 1
 ) (
     input clk,

@@ -26,7 +26,7 @@ module spi_clock_barrier_crossing (
 
     // Write barrier ------------------------------------------------------------------------------
 
-    // Below text considers the wires inside of the 
+    // Below text considers the wires inside of the
     // _sync_intermediate is the first register of the double sampling barrier,
     // _sync is the second (which you can use in the clk clock domain without
     // risking metastability). However, it stays high for more than a cycle in

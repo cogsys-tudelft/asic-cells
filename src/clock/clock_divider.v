@@ -1,11 +1,10 @@
 `include "clock/frequency_divider_stage.v"
 
-module clock_divider
 /**
-     * Clock divider thatt is posedge sensitive, with no output synchronization.
-     */
-#(
-    parameter NUM_STAGES = 7
+ * Clock divider that is posedge sensitive, with no output synchronization.
+ */
+module clock_divider #(
+    parameter int NUM_STAGES = 7
 ) (
     input clk,
     input rst,
@@ -13,7 +12,7 @@ module clock_divider
     output clk_div
 );
 
-    if (NUM_STAGES <= 0) begin
+    if (NUM_STAGES <= 0) begin : gen_throw_error__NUM_STAGES_must_be_greater_than_0
         ERROR__NUM_STAGES_must_be_greater_than_0 a ();
     end
 
@@ -26,10 +25,11 @@ module clock_divider
     // );
     // endgenerate
     // But apparently, the conditional operator is not synthesizable.
+    // That's why I'm using the following code instead.
 
     genvar i;
     generate
-        for (i = 0; i < NUM_STAGES; i = i + 1) begin : clock_divider_stage
+        for (i = 0; i < NUM_STAGES; i = i + 1) begin : gen_clock_divider_stage
             wire in;
 
             if (i == 0) assign in = clk;
@@ -43,7 +43,7 @@ module clock_divider
                 .clk_out(out)
             );
 
-            if (i == NUM_STAGES - 1) begin
+            if (i == NUM_STAGES - 1) begin : gen_assign_clk_div_in_last_stage
                 assign clk_div = out;
             end
         end

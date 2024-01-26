@@ -1,4 +1,6 @@
-// Frequency-divider stage (posedge sensitive)
+/**
+ * Frequency-divider stage (posedge sensitive)
+ */
 module frequency_divider_stage (
     input clk_in,
     input rst,
