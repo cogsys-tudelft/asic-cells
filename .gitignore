@@ -1,0 +1,30 @@
+# Generated files
+src/pointers.v
+src/config_memory.sv
+
+# Output files
+*.vcd
+*.bin
+
+# Editors
+.vscode
+
+# iverilog
+*.iv
+
+# QuestaSim
+work
+
+# macOS
+.DS_Store
+
+# Bender
+Bender.local
+
+# CocoTB
+__pycache__
+sim_build
+results.xml
+
+# Verilator
+obj_dir
