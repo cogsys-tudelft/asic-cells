@@ -1,5 +1,5 @@
-`ifndef __GENERIC_DOUBLE_PORT_TSMC_SRAM_SV__
-`define __GENERIC_DOUBLE_PORT_TSMC_SRAM_SV__
+`ifndef __DOUBLE_PORT_TSMC_SRAM_SV__
+`define __DOUBLE_PORT_TSMC_SRAM_SV__
 
 /**
  * Implementation based of off:
@@ -7,7 +7,7 @@
  *
  * Ports are named in accordance with the TSMC 40nm SRAM library.
  */
-module generic_double_port_tsmc_sram #(
+module double_port_tsmc_sram #(
     parameter int WIDTH = 128,
     parameter int NUM_ROWS = 4096,
     localparam int AddressWidth = $clog2(NUM_ROWS)
@@ -16,12 +16,12 @@ module generic_double_port_tsmc_sram #(
     input CLK,  // Clock (synchronous read/write)
 
     // Control and data inputs
-    input REB,  // Read enable (active high)
-    input WEB,  // Write enable (active high)
+    input REB,  // "Chip  enable, active  low  for  SRAM  operation; active high for fuse data setting"
+    input WEB,  // Write enable: for writing, WEB is low; for reading, WEB is high
     input [AddressWidth-1:0] AA,  // Address bus (write)
     input [AddressWidth-1:0] AB,  // Address bus (read)
     input [WIDTH-1:0] D,  // Data input bus (write)
-    input [WIDTH-1:0] M,  // Mask bus (write, 1=overwrite)
+    input [WIDTH-1:0] M,  // Mask bus (overwrite = 0, otherwise = 1)
 
     // Data output
     output [WIDTH-1:0] Q  // Data output bus (read)
@@ -31,10 +31,10 @@ module generic_double_port_tsmc_sram #(
     reg [WIDTH-1:0] Qr;
 
     always @(posedge CLK) begin
-        Qr <= REB ? SRAM[AB] : Qr;
+        Qr <= ~REB ? SRAM[AB] : Qr;
 
-        if (WEB) begin
-            SRAM[AA] <= (D & M) | (SRAM[AA] & ~M);
+        if (~WEB) begin
+            SRAM[AA] <= (D & ~M) | (SRAM[AA] & M);
         end
     end
 
