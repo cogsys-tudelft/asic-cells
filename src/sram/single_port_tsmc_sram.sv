@@ -16,24 +16,23 @@ module single_port_tsmc_sram #(
     input CLK,  // Clock (synchronous read/write)
 
     // Control and data inputs
-    input CEB,  // "Chip  enable, active  low  for  SRAM  operation; active high for fuse data setting"
+    input CEB,  // "Chip enable, active low for SRAM operation; active high for fuse data setting"
     input WEB,  // Write enable: for writing, WEB is low; for reading, WEB is high
     input [AddressWidth-1:0] A,  // Address bus
     input [WIDTH-1:0] D,  // Data input bus (write)
-    input [WIDTH-1:0] M,  // Mask bus (write, 1=overwrite)
+    input [WIDTH-1:0] M,  // Mask bus (overwite = 0, otherwise = 1)
 
     // Data output
     output [WIDTH-1:0] Q  // Data output bus (read)
 );
-
-    reg [WIDTH-1:0] SRAM[NUM_ROWS-1];
+    reg [WIDTH-1:0] SRAM[NUM_ROWS];
     reg [WIDTH-1:0] Qr;
 
-    always @(posedge CLK) begin
+    always_ff @(posedge CLK) begin
         Qr <= ~CEB ? SRAM[A] : Qr;
 
         if (~CEB & ~WEB) begin
-            SRAM[A] <= (D & M) | (SRAM[A] & ~M);
+            SRAM[A] <= (D & ~M) | (SRAM[A] & M);
         end
     end
 
