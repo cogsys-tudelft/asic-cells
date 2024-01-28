@@ -22,7 +22,8 @@ def generate_config_memory(config_sizes_and_names: ConfigurationList):
 
     # Remove all entries that still have a tuple 
     for i in range(len(parameters)):
-        if type(parameters[i]) is tuple:
+        # Check for list type as well since JSON files do not support tuples and instead use lists
+        if type(parameters[i]) is tuple or type(parameters[i]) is list:
             parameters[i] = parameters[i][0]
 
     # Remove all duplicates
