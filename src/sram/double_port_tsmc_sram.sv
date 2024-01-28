@@ -6,6 +6,9 @@
  * https://github.com/ChFrenkel/ReckOn/blob/5e5c0bea8fe1897876ba3b7bfdcecf76d3bf4505/src/srnn.v#L1407
  *
  * Ports are named in accordance with the TSMC 40nm SRAM library.
+ *
+ * This SRAM is double ported, meaning that it can read and write one value at the same.
+ * It is however not possible to write two values or read two values at the same time.
  */
 module double_port_tsmc_sram #(
     parameter int WIDTH = 128,
@@ -16,8 +19,8 @@ module double_port_tsmc_sram #(
     input CLK,  // Clock (synchronous read/write)
 
     // Control and data inputs
-    input REB,  // "Chip  enable, active  low  for  SRAM  operation; active high for fuse data setting"
-    input WEB,  // Write enable: for writing, WEB is low; for reading, WEB is high
+    input REB,  // "Chip enable, active low for SRAM operation; active high for fuse data setting"
+    input WEB,  // Write enable: WEB is low for writing; for reading, WEB is high
     input [AddressWidth-1:0] AA,  // Address bus (write)
     input [AddressWidth-1:0] AB,  // Address bus (read)
     input [WIDTH-1:0] D,  // Data input bus (write)
@@ -26,8 +29,7 @@ module double_port_tsmc_sram #(
     // Data output
     output [WIDTH-1:0] Q  // Data output bus (read)
 );
-
-    reg [WIDTH-1:0] SRAM[NUM_ROWS-1];
+    reg [WIDTH-1:0] SRAM[NUM_ROWS];
     reg [WIDTH-1:0] Qr;
 
     always @(posedge CLK) begin
