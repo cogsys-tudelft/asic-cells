@@ -1,12 +1,13 @@
 from typing import List, Tuple, Union
 
-from jinja2 import Template
-
 from pathlib import Path
+
+from jinja2 import Template
 
 ConfigurationList = List[Tuple[Union[Union[int, str], Tuple[Union[str, int], Union[int, Tuple[int, int]]]], str, bool]]
 
 TEMPLATE_PATH = Path(__file__).resolve().parent / "config_memory.sv.jinja2"
+
 
 def generate_config_memory(config_sizes_and_names: ConfigurationList):
     """Generate a configuration memory for use together with the SPI interface.
@@ -17,17 +18,22 @@ def generate_config_memory(config_sizes_and_names: ConfigurationList):
         config_sizes_and_names (ConfigurationList): A list of tuples containing the name and size of each configuration variable. In human-readable format, the type is: [(bit_width [int/str] | (bit_width [int/str], count [int] | (max_index [int], start_index [int])), name, requires_reset)]
     """
 
-    # Take all bit_widths that are not integers
-    parameters = [x[0] for x in config_sizes_and_names if type(x[0]) is not int]
+    # Take all bit_widths that are not integers and start with a letter
+    parameters = [x[0] for x in pointer_sizes_and_names if type(x[0]) is not int and x[0][0].isalpha()]
 
-    # Remove all entries that still have a tuple 
-    for i in range(len(parameters)):
-        # Check for list type as well since JSON files do not support tuples and instead use lists
-        if type(parameters[i]) is tuple or type(parameters[i]) is list:
-            parameters[i] = parameters[i][0]
+    split_parameters = []
+
+    # Find all '-' and '+' characters in each of the parameters, split these parameters and add them to the list
+    for p in parameters:
+        if "-" in p:
+            split_parameters.extend(p.split("-"))
+        elif "+" in p:
+            split_parameters.extend(p.split("+"))
+        else:
+            split_parameters.append(p)
 
     # Remove all duplicates
-    parameters = list(set(parameters))
+    parameters = list(set(split_parameters))
 
     config_address_mapping = []
     config_start_address_mapping = {}

@@ -1,23 +1,38 @@
 module pointers
-    #(parameter MESSAGE_BIT_WIDTH = 32, START_ADDRESS_BIT_WIDTH = 16)
-    (
+    #(
+        parameter MESSAGE_BIT_WIDTH = 32,
+        parameter START_ADDRESS_BIT_WIDTH = 16{% if parameters != [] %},
+
+        {% for name in parameters %}
+        parameter {{name}} = 1{% if not loop.last %},
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
+    )(
         input clk,
-        
+
         input read_sync,
         input code_is_pointers,
 
         input [START_ADDRESS_BIT_WIDTH-1:0] spi_address,
-        output reg [MESSAGE_BIT_WIDTH-1:0] pointer_spi_data_out
+        output reg [MESSAGE_BIT_WIDTH-1:0] pointer_spi_data_out,
+
+        {% for bit_width, name in pointer_sizes_and_names %}
+            {% if bit_width != -1 %}
+        output reg {% if bit_width != 1 %}[{{bit_width}}-1:0] {% endif %}{{name}}{{ "," if not loop.last }}
+            {% endif %}
+        {% endfor %}
     );
 
     always @(posedge clk) begin
         if (code_is_pointers && read_sync) begin
             case (spi_address)
-                {% for name in pointer_names%}
-                {{ loop.index0 }}: pointer_spi_data_out <= {{ name }};
+                {% for _, name in pointer_sizes_and_names %}
+                {{ loop.index0 }}: pointer_spi_data_out <= {{name}};
                 {% endfor %}
             endcase
         end
     end
-
 endmodule
+

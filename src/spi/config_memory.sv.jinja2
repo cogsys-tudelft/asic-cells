@@ -2,6 +2,7 @@ module config_memory
     #(
         parameter MESSAGE_BIT_WIDTH = 32,
         parameter START_ADDRESS_BIT_WIDTH = 16{% if parameters != [] %},
+
         {% for name in parameters %}
         parameter {{name}} = 1{% if not loop.last %},
         {% endif %}
@@ -55,3 +56,4 @@ module config_memory
         end
     end
 endmodule
+
