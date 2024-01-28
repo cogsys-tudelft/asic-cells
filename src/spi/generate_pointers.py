@@ -51,8 +51,7 @@ def generate_pointers(pointer_sizes_and_names: PointerList):
         template = Template(t.read(),
                             trim_blocks=True, lstrip_blocks=True)
 
-        with open("pointers.v", "w") as r:
-            r.write(template.render(pointer_sizes_and_names=pointer_sizes_and_names_with_values, parameters=parameters))
+        return template.render(pointer_sizes_and_names=pointer_sizes_and_names_with_values, parameters=parameters)
 
 
 if __name__ == "__main__": 
