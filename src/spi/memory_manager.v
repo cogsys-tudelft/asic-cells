@@ -1,22 +1,21 @@
 `ifndef __MEMORY_MANAGER_V__
 `define __MEMORY_MANAGER_V__
 
-module memory_manager
 /**
-     * Code of this module is a generalization of:
-     * https://github.com/ChFrenkel/ReckOn/blob/5e5c0bea8fe1897876ba3b7bfdcecf76d3bf4505/src/srnn.v#L1260
-     *
-     * If you want to use this memory manager for dual port memories (which have parallel read and write)
-     * capabilities, then pass the control_read_enable signal to the control_chip_select signal and pass
-     * the control_read_address to the control_address signal. Then, to control your memory, use the 
-     * write_enable and read_enable signals. To switch between writing from the memory manager and writing
-     * from the main core, use the program_this_memory_new signal.
-     */
-#(
-    parameter WORD_BIT_WIDTH = 64,
-    ADDRESS_BIT_WIDTH = 9,
-    START_ADDRESS_BIT_WIDTH = 14,
-    MESSAGE_BIT_WIDTH = 32
+ * Code of this module is a generalization of:
+ * https://github.com/ChFrenkel/ReckOn/blob/5e5c0bea8fe1897876ba3b7bfdcecf76d3bf4505/src/srnn.v#L1260
+ *
+ * If you want to use this memory manager for dual port memories (which have parallel read and write
+ * capabilities), then pass your control_read_enable signal to the control_chip_select signal and pass
+ * the control_read_address to the control_address signal. Then, to control your memory, use the
+ * write_enable and read_enable signals. To switch between writing from the memory manager and writing
+ * from the main core, use the program_this_memory_new signal.
+*/
+module memory_manager #(
+    parameter int WORD_BIT_WIDTH = 64,
+    parameter int ADDRESS_BIT_WIDTH = 9,
+    parameter int START_ADDRESS_BIT_WIDTH = 14,
+    parameter int MESSAGE_BIT_WIDTH = 32
 ) (
     input program_memory_new,
     input read_memory_sync,
