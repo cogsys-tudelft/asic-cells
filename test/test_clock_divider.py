@@ -24,4 +24,4 @@ def test_clock_divider(parameters):
 
 
 if __name__ == "__main__":
-    test_clock_divider({"NUM_STAGES": "-1"})
+    test_clock_divider({"NUM_STAGES": "2"})
