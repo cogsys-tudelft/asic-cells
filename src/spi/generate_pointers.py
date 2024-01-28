@@ -45,8 +45,6 @@ def generate_pointers(pointer_sizes_and_names: PointerList):
 
         pointer_sizes_and_names_with_values[i] = listed
 
-    print(pointer_sizes_and_names_with_values)
-
     with open(TEMPLATE_PATH) as t:
         template = Template(t.read(),
                             trim_blocks=True, lstrip_blocks=True)
