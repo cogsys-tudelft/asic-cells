@@ -19,7 +19,7 @@ def generate_config_memory(config_sizes_and_names: ConfigurationList):
     """
 
     # Take all bit_widths that are not integers and start with a letter
-    parameters = [x[0] for x in pointer_sizes_and_names if type(x[0]) is not int and x[0][0].isalpha()]
+    parameters = [x[0] for x in config_sizes_and_names if type(x[0]) is not int and x[0][0].isalpha()]
 
     split_parameters = []
 
