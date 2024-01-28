@@ -67,7 +67,7 @@ if __name__ == "__main__":
     json_path = cwd / args.path_to_json
     json_file_name, json_dir = json_path.name, json_path.parent
 
-    output_file_name = json_file_name[:-5] + ".sv"
+    output_file_name = json_file_name[:-5] + ".v"
 
     with open(json_path) as f:
         pointer_sizes_and_names = json.load(f)["pointer_sizes_and_names"]
