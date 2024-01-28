@@ -4,7 +4,7 @@
 `include "double_delay_register.v"
 
 module wide_double_delay_register #(
-    parameter WIDTH = 8
+    parameter int WIDTH = 8
 ) (
     input clk,
     input rst,
@@ -15,7 +15,7 @@ module wide_double_delay_register #(
 
     genvar i;
     generate
-        for (i = 0; i < WIDTH; i = i + 1) begin
+        for (i = 0; i < WIDTH; i = i + 1) begin : gen_wide_double_delay_register
             double_delay_register double_delay_register_inst (
                 .clk(clk),
                 .rst(rst),

@@ -7,7 +7,7 @@
  * via a register, `double_delay_register.v` should be used.
  */
 module double_latching_barrier #(
-    parameter AT_POSEDGE_RST = 1
+    parameter bool AT_POSEDGE_RST = 1
 ) (
     input clk,
     input rst,
@@ -25,7 +25,7 @@ module double_latching_barrier #(
     // Unfortunately, the approach below is the only way to create synthesizable
     // Verilog code. It is not possible to only generate the always @ (...) part.
     generate
-        if (AT_POSEDGE_RST == 1) begin
+        if (AT_POSEDGE_RST == 1) begin : gen_if_at_posedge_rst
             always @(posedge clk, posedge rst) begin
                 if (rst) begin
                     __intermediate__ <= 1'b0;
@@ -35,7 +35,7 @@ module double_latching_barrier #(
                     out <= __intermediate__;
                 end
             end
-        end else begin
+        end else begin : gen_if_regular_rst
             always @(posedge clk) begin
                 if (rst) begin
                     __intermediate__ <= 1'b0;

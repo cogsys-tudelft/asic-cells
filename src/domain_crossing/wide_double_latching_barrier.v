@@ -1,8 +1,8 @@
 `include "double_latching_barrier.v"
 
 module wide_double_latching_barrier #(
-    parameter WIDTH = 8,
-    parameter AT_POSEDGE_RST = 1
+    parameter int WIDTH = 8,
+    parameter bool AT_POSEDGE_RST = 1
 ) (
     input clk,
     input rst,
@@ -15,7 +15,7 @@ module wide_double_latching_barrier #(
 
     genvar i;
     generate
-        for (i = 0; i < WIDTH; i = i + 1) begin
+        for (i = 0; i < WIDTH; i = i + 1) begin : gen_wide_double_latching_barrier
             double_latching_barrier #(
                 .AT_POSEDGE_RST(AT_POSEDGE_RST)
             ) double_latching_barrier_inst (
