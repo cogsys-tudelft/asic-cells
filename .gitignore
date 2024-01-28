@@ -1,6 +1,6 @@
 # Generated files
-src/pointers.v
-src/config_memory.sv
+src/spi/pointers.v
+src/spi/config_memory.sv
 
 # Output files
 *.vcd
