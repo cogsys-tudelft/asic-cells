@@ -30,6 +30,7 @@ sources:
 
       - src/aer/high_speed_in_bus.v
       - src/aer/high_speed_out_bus.v
-      
+
       - src/clock/frequency_divider_stage.v
       - src/clock/clock_divider.v
+      - src/clock/ext_or_int_clock.v
