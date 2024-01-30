@@ -1,9 +1,9 @@
-`ifndef __TRIPLE_TOGGLE_BARRIER_V__
-`define __TRIPLE_TOGGLE_BARRIER_V__
+`ifndef __TRIPLE_FLOP_TOGGLE_SYNCHRONIZER_V__
+`define __TRIPLE_FLOP_TOGGLE_SYNCHRONIZER_V__
 
 `include "double_flop_synchronizer.v"
 
-module triple_toggle_barrier #(
+module triple_flop_toggle_synchronizer #(
     parameter bool AT_POSEDGE_RST = 1
 ) (
     input clk,
