@@ -1,16 +1,16 @@
-`ifndef __DOUBLE_PORT_TSMC_SRAM_SV__
-`define __DOUBLE_PORT_TSMC_SRAM_SV__
+`ifndef __DOUBLE_PORT_TYPE_T_SRAM_SV__
+`define __DOUBLE_PORT_TYPE_T_SRAM_SV__
 
 /**
  * Implementation based of off:
  * https://github.com/ChFrenkel/ReckOn/blob/5e5c0bea8fe1897876ba3b7bfdcecf76d3bf4505/src/srnn.v#L1407
  *
- * Ports are named in accordance with the TSMC 40nm SRAM library.
+ * Ports are named in accordance with the type T 40nm SRAM library.
  *
  * This SRAM is double ported, meaning that it can read and write one value at the same.
  * It is however not possible to write two values or read two values at the same time.
  */
-module double_port_tsmc_sram #(
+module double_port_type_t_sram #(
     parameter int WIDTH = 128,
     parameter int NUM_ROWS = 4096,
     localparam int AddressWidth = $clog2(NUM_ROWS)

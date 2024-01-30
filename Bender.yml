@@ -25,8 +25,8 @@ sources:
       - src/spi/spi_clock_barrier_crossing.v
       - src/spi/memory_manager.v
 
-      - src/sram/single_port_tsmc_sram.sv
-      - src/sram/double_port_tsmc_sram.sv
+      - src/sram/single_port_type_t_sram.sv
+      - src/sram/double_port_type_t_sram.sv
 
       - src/aer/high_speed_in_bus.v
       - src/aer/high_speed_out_bus.v
