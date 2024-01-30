@@ -21,9 +21,9 @@ sources:
       - src/clock_domain_crossing/wide_double_delay_register.v
       - src/clock_domain_crossing/triple_toggle_barrier.v
 
-      - src/spi/spi_client.sv
-      - src/spi/spi_clock_barrier_crossing.v
-      - src/spi/memory_manager.v
+      - src/spi_interface/spi_client.sv
+      - src/spi_interface/spi_clock_barrier_crossing.v
+      - src/spi_interface/memory_manager.v
 
       - src/sram/single_port_type_t_sram.sv
       - src/sram/double_port_type_t_sram.sv
