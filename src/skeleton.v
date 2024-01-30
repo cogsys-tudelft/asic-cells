@@ -94,7 +94,7 @@ module skeleton (
     // ============================================================================================
 
     // Make external asynchronous reset synchronous with the internal clock
-    double_latching_barrier double_latching_barrier_rst (
+    double_flop_synchronizer double_flop_synchronizer_rst (
         .clk(clk),
         .rst(1'b0),
 
@@ -108,7 +108,7 @@ module skeleton (
 
     wire enable_processing_sync;
 
-    double_latching_barrier double_latching_barrier_enable_processing (
+    double_flop_synchronizer double_flop_synchronizer_enable_processing (
         .clk(clk),
         .rst(rst_sync),
 

@@ -16,8 +16,8 @@ frozen: false
 sources:
   - target: rtl
     files:
-      - src/domain_crossing/wide_double_latching_barrier.v
-      - src/domain_crossing/double_latching_barrier.v
+      - src/domain_crossing/wide_double_flop_synchronizer.v
+      - src/domain_crossing/double_flop_synchronizer.v
       - src/domain_crossing/wide_double_delay_register.v
       - src/domain_crossing/triple_toggle_barrier.v
 

@@ -1,6 +1,6 @@
 module high_speed_out_bus #(
-    parameter HIGH_SPEED_OUT_PINS = 8,
-    parameter SENT_COUNTER_BIT_WIDTH = 4
+    parameter int HIGH_SPEED_OUT_PINS = 8,
+    parameter int SENT_COUNTER_BIT_WIDTH = 4
 ) (
     input clk,
     input rst,
@@ -21,9 +21,9 @@ module high_speed_out_bus #(
 
     output done_sending
 );
-
     wire acknowledge_sync;
-    double_latching_barrier double_latching_barrier_acknowledge (
+
+    double_flop_synchronizer double_flop_synchronizer_acknowledge (
         .clk(clk),
         .rst(rst),
         .enable(1'b1),

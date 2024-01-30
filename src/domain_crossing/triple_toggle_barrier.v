@@ -1,7 +1,7 @@
 `ifndef __TRIPLE_TOGGLE_BARRIER_V__
 `define __TRIPLE_TOGGLE_BARRIER_V__
 
-`include "double_latching_barrier.v"
+`include "double_flop_synchronizer.v"
 
 module triple_toggle_barrier #(
     parameter bool AT_POSEDGE_RST = 1
@@ -17,9 +17,9 @@ module triple_toggle_barrier #(
 
     wire in_sync;
 
-    double_latching_barrier #(
+    double_flop_synchronizer #(
         .AT_POSEDGE_RST(AT_POSEDGE_RST)
-    ) double_latching_barrier_inst (
+    ) double_flop_synchronizer_inst (
         .clk(clk),
         .rst(rst),
         .enable(enable),

@@ -1,4 +1,4 @@
-`include "double_latching_barrier.v"
+`include "double_flop_synchronizer.v"
 `include "triple_toggle_barrier.v"
 
 module spi_clock_barrier_crossing (
@@ -16,7 +16,7 @@ module spi_clock_barrier_crossing (
 
     // Read barrier -------------------------------------------------------------------------------
 
-    double_latching_barrier double_latching_barrier_read (
+    double_flop_synchronizer double_flop_synchronizer_read (
         .clk(clk),
         .rst(rst),
         .enable(enable_configuration),

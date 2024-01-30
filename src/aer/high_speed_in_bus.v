@@ -1,4 +1,4 @@
-`include "double_latching_barrier.v"
+`include "double_flop_synchronizer.v"
 
 module high_speed_in_bus (
     input clk,
@@ -10,9 +10,9 @@ module high_speed_in_bus (
     input request,
     output reg acknowledge
 );
-
     wire request_sync;
-    double_latching_barrier double_latching_barrier_request (
+
+    double_flop_synchronizer double_flop_synchronizer_request (
         .clk(clk),
         .rst(rst),
         .enable(1'b1),
