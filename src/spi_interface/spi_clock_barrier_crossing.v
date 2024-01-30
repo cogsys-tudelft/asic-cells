@@ -1,5 +1,5 @@
 `include "double_flop_synchronizer.v"
-`include "triple_toggle_barrier.v"
+`include "triple_flop_toggle_synchronizer.v"
 
 module spi_clock_barrier_crossing (
     input clk,
@@ -35,7 +35,7 @@ module spi_clock_barrier_crossing (
     // high only for one clock cycle per SPI transaction, which I use to
     // trigger a write to the SRAM.
 
-    triple_toggle_barrier triple_toggle_barrier_write (
+    triple_flop_toggle_synchronizer triple_flop_toggle_synchronizer_write (
         .clk(clk),
         .rst(rst),
         .enable(enable_configuration),
