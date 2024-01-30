@@ -13,13 +13,11 @@ The in-bus handles the incoming and outgoing request and acknowledge signals, wh
 
 ## Clock
 
-The clock directory contains a clock divider ([`clock_divider`](./src/clock/clock_divider.v), number of stages can be specified via a parameter) and a simple OR gate ([`ext_or_int_clock`](./src/clock/ext_or_int_clock.v))that switches between an external and internal clock to make SDC constraint definitions easier.
+The clock directory contains a clock divider ([`clock_divider`](./src/clock/clock_divider.v), number of stages can be specified via a parameter) and a simple OR gate ([`ext_or_int_clock`](./src/clock/ext_or_int_clock.v)) that switches between an external and internal clock to make SDC constraint definitions easier.
 
 ## Clock domain crossing (CDC)
 
-Two domain crossing modules are provided: a [`triple_toggle_barrier`](./src/domain_crossing/triple_toggle_barrier.v) and a [`double_latching_barrier`](./src/domain_crossing/double_latching_barrier.v). These modules are used to cross clock domains. The triple toggle barrier is used to cross from a fast clock domain to a slow clock domain, while the double toggle barrier is used to cross from a slow clock domain to a fast clock domain. The modules are based on the [triple toggle barrier](https://www.sunburst-design.com/papers/CummingsSNUG2002SJ_SystemVerilog_Events.pdf) and the [double toggle barrier](https://www.sunburst-design.com/papers/CummingsSNUG2002Boston_SystemVerilog_Events.pdf) papers.
-
-Also a wide (multi-bit) version of the double latching barrier is provided: [`wide_double_latching_barrier`](./src/domain_crossing/wide_double_latching_barrier.v).
+Two domain crossing modules are provided: a [`double_flop_synchronizer`](./src/domain_crossing/double_flop_synchronizer.v) and a [`triple_flop_synchronizer`](./src/domain_crossing/triple_flop_synchronizer.v). For the triple flop synchronizer, there is also a variant where the output goes high if the input toggles: [`triple_flop_toggle_synchronizer`](./src/domain_crossing/triple_flop_toggle_synchronizer.v), while also a wide (multi-bit) version of the double flop synchronizer is provided: [`wide_double_flop_synchronizer`](./src/domain_crossing/wide_double_flop_synchronizer.v). All of these modules can be used to cross from a slow clock domain (input data) to a fast clock domain. For more information about clock domain crossing see [here](https://electrobinary.blogspot.com/2020/06/double-flop-synchronizer.html) for information about a double flop synchronizer and [here](https://www.verilogpro.com/clock-domain-crossing-part-1/) for information about clock domain crossing in general.
 
 ## SRAM
 
