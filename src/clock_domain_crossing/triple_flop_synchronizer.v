@@ -11,7 +11,7 @@ module triple_flop_synchronizer #(
 
     input enable,
 
-    input  in,
+    input in,
     output reg out
 );
 
