@@ -1,6 +1,6 @@
 module high_speed_out_bus #(
-    parameter int HIGH_SPEED_OUT_PINS = 8,
-    parameter int SENT_COUNTER_BIT_WIDTH = 4
+    parameter integer HIGH_SPEED_OUT_PINS = 8,
+    parameter integer SENT_COUNTER_BIT_WIDTH = 4
 ) (
     input clk,
     input rst,

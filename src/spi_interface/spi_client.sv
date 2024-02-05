@@ -6,10 +6,10 @@
  * should not drive the external clock nor the MOSI line.
  */
 module spi_client #(
-    parameter MESSAGE_BIT_WIDTH = 32,
-    parameter CODE_BIT_WIDTH = 4,
-    parameter START_ADDRESS_BIT_WIDTH = 16,
-    localparam NUM_TRANSACTIONS_BIT_WIDTH = MESSAGE_BIT_WIDTH - CODE_BIT_WIDTH - START_ADDRESS_BIT_WIDTH - 1
+    parameter integer MESSAGE_BIT_WIDTH = 32,
+    parameter integer CODE_BIT_WIDTH = 4,
+    parameter integer START_ADDRESS_BIT_WIDTH = 16,
+    localparam integer NUM_TRANSACTIONS_BIT_WIDTH = MESSAGE_BIT_WIDTH - CODE_BIT_WIDTH - START_ADDRESS_BIT_WIDTH - 1
 ) (
     input RST_async,
 
@@ -32,8 +32,8 @@ module spi_client #(
 
     // Local parameters ---------------------------------------------------------------------------
 
-    localparam WITHIN_MESSAGE_COUNTER_BIT_WIDTH = $clog2(MESSAGE_BIT_WIDTH);
-    localparam SPI_COUNTER_BIT_WIDTH = NUM_TRANSACTIONS_BIT_WIDTH + WITHIN_MESSAGE_COUNTER_BIT_WIDTH;
+    localparam integer WITHIN_MESSAGE_COUNTER_BIT_WIDTH = $clog2(MESSAGE_BIT_WIDTH);
+    localparam integer SPI_COUNTER_BIT_WIDTH = NUM_TRANSACTIONS_BIT_WIDTH + WITHIN_MESSAGE_COUNTER_BIT_WIDTH;
 
     // Check parameters ---------------------------------------------------------------------------
 

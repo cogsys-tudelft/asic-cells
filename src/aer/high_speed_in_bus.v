@@ -1,5 +1,3 @@
-`include "double_flop_synchronizer.v"
-
 module high_speed_in_bus (
     input clk,
     input rst,
