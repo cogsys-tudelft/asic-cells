@@ -12,10 +12,10 @@
  * from the main core, use the program_this_memory_new signal.
 */
 module memory_manager #(
-    parameter int WORD_BIT_WIDTH = 64,
-    parameter int ADDRESS_BIT_WIDTH = 9,
-    parameter int START_ADDRESS_BIT_WIDTH = 14,
-    parameter int MESSAGE_BIT_WIDTH = 32
+    parameter integer WORD_BIT_WIDTH = 64,
+    parameter integer ADDRESS_BIT_WIDTH = 9,
+    parameter integer START_ADDRESS_BIT_WIDTH = 14,
+    parameter integer MESSAGE_BIT_WIDTH = 32
 ) (
     input program_memory_new,
     input read_memory_sync,

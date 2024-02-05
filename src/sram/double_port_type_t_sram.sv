@@ -11,9 +11,9 @@
  * It is however not possible to write two values or read two values at the same time.
  */
 module double_port_type_t_sram #(
-    parameter int WIDTH = 128,
-    parameter int NUM_ROWS = 4096,
-    localparam int AddressWidth = $clog2(NUM_ROWS)
+    parameter integer WIDTH = 128,
+    parameter integer NUM_ROWS = 4096,
+    localparam integer AddressWidth = $clog2(NUM_ROWS)
 ) (
     // Global inputs
     input CLK,  // Clock (synchronous read/write)

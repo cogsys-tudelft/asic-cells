@@ -4,7 +4,7 @@
 `include "double_delay_register.v"
 
 module wide_double_delay_register #(
-    parameter int WIDTH = 8
+    parameter integer WIDTH = 8
 ) (
     input clk,
     input rst,
