@@ -1,6 +1,3 @@
-`include "double_flop_synchronizer.v"
-`include "triple_flop_toggle_synchronizer.v"
-
 module spi_clock_barrier_crossing (
     input clk,
     input rst,

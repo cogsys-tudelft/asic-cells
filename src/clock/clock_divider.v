@@ -1,10 +1,8 @@
-`include "clock/frequency_divider_stage.v"
-
 /**
  * Clock divider that is posedge sensitive, with no output synchronization.
  */
 module clock_divider #(
-    parameter int NUM_STAGES = 7
+    parameter integer NUM_STAGES = 7
 ) (
     input clk,
     input rst,
