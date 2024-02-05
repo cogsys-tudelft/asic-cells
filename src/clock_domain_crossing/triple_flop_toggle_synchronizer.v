@@ -2,7 +2,7 @@
 `define __TRIPLE_FLOP_TOGGLE_SYNCHRONIZER_V__
 
 module triple_flop_toggle_synchronizer #(
-    parameter bool AT_POSEDGE_RST = 1
+    parameter integer AT_POSEDGE_RST = 1
 ) (
     input clk,
     input rst,
