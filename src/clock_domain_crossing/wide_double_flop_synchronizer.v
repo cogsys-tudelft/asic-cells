@@ -1,5 +1,3 @@
-`include "double_flop_synchronizer.v"
-
 module wide_double_flop_synchronizer #(
     parameter integer WIDTH = 8,
     parameter bool AT_POSEDGE_RST = 1

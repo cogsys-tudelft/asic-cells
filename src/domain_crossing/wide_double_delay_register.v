@@ -1,8 +1,6 @@
 `ifndef __WIDE_DOUBLE_DELAY_REGISTER_V__
 `define __WIDE_DOUBLE_DELAY_REGISTER_V__
 
-`include "double_delay_register.v"
-
 module wide_double_delay_register #(
     parameter integer WIDTH = 8
 ) (
