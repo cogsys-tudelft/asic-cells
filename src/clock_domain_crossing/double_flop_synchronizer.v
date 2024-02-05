@@ -7,7 +7,7 @@
  * via a register, `double_delay_register.v` should be used.
  */
 module double_flop_synchronizer #(
-    parameter bool AT_POSEDGE_RST = 1
+    parameter integer AT_POSEDGE_RST = 1
 ) (
     input clk,
     input rst,

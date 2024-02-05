@@ -2,7 +2,7 @@
 
 module wide_double_flop_synchronizer #(
     parameter int WIDTH = 8,
-    parameter bool AT_POSEDGE_RST = 1
+    parameter integer AT_POSEDGE_RST = 1
 ) (
     input clk,
     input rst,
