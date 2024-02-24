@@ -9,6 +9,8 @@ module high_speed_out_bus #(
     input sending,
     input will_stop_sending, // next_state != `SENDING
 
+    input data_ready_for_sending,
+
     input [SENT_COUNTER_BIT_WIDTH-1:0] num_sends,
 
     input [HIGH_SPEED_OUT_PINS-1:0] in,
@@ -44,8 +46,10 @@ module high_speed_out_bus #(
             sent_counter <= 0;
         end else if (sending && (sent_counter <= num_sends)) begin
             if (!acknowledge_sync && !request) begin
-                request <= 1'b1;
-                out <= in;
+                if (data_ready_for_sending) begin
+                    request <= 1'b1;
+                    out <= in;
+                end
             end else if (acknowledge_sync && request) begin
                 request <= 1'b0;
                 sent_counter <= sent_counter + 1;
