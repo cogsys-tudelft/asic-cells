@@ -1,3 +1,5 @@
+`include "frequency_divider_stage.v"
+
 /**
  * Clock divider that is posedge sensitive, with no output synchronization.
  */
@@ -9,11 +11,6 @@ module clock_divider #(
 
     output clk_div
 );
-
-    if (NUM_STAGES <= 0) begin : gen_throw_error__NUM_STAGES_must_be_greater_than_0
-        ERROR__NUM_STAGES_must_be_greater_than_0 a ();
-    end
-
     // My original code was:
     // generate
     // frequency_divider_stage frequency_divider_stage_inst (
@@ -31,7 +28,7 @@ module clock_divider #(
             wire in;
 
             if (i == 0) assign in = clk;
-            else assign in = clock_divider_stage[i-1].out;
+            else assign in = gen_clock_divider_stage[i-1].out;
 
             wire out;
 
