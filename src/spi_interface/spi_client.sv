@@ -18,7 +18,7 @@ module spi_client #(
     input  MOSI,
 
     input clk,
-    input rst_sync,
+    input rst,
 
     input enable_configuration,
 
@@ -94,7 +94,7 @@ module spi_client #(
 
     spi_clock_barrier_crossing spi_clock_barrier_crossing_inst (
         .clk(clk),
-        .rst(rst_sync),
+        .rst(rst),
 
         .enable_configuration(enable_configuration),
         .MOSI_data_ready(MOSI_data_ready),
