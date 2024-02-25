@@ -1,17 +1,17 @@
 module config_memory
     #(
-        parameter MESSAGE_BIT_WIDTH = 32,
-        parameter START_ADDRESS_BIT_WIDTH = 16{% if parameters != [] %},
+        parameter integer MESSAGE_BIT_WIDTH = 32,
+        parameter integer START_ADDRESS_BIT_WIDTH = 16{% if parameters != [] %},
 
         {% for name in parameters %}
-        parameter {{name}} = 1{% if not loop.last %},
+        parameter integer {{name}} = 1{% if not loop.last %},
         {% endif %}
         {% endfor %}
         {% endif %}
 
     )(
         input SCK,
-        input RST_async,
+        input rst_async,
 
         input config_data_ready,
         input [START_ADDRESS_BIT_WIDTH-1:0] current_config_address,
@@ -26,8 +26,8 @@ module config_memory
         {% endfor %}
     );
 
-    always @(posedge SCK, posedge RST_async) begin
-        if (RST_async) begin
+    always @(posedge SCK, posedge rst_async) begin
+        if (rst_async) begin
             {% for bit_width, name, requires_reset in config_sizes_and_names %}
                 {% if requires_reset %}
                     {% if bit_width is iterable and bit_width is not string %}

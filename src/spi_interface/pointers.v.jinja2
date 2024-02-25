@@ -1,10 +1,10 @@
 module pointers
     #(
-        parameter MESSAGE_BIT_WIDTH = 32,
-        parameter START_ADDRESS_BIT_WIDTH = 16{% if parameters != [] %},
+        parameter integer MESSAGE_BIT_WIDTH = 32,
+        parameter integer START_ADDRESS_BIT_WIDTH = 16{% if parameters != [] %},
 
         {% for name in parameters %}
-        parameter {{name}} = 1{% if not loop.last %},
+        parameter integer {{name}} = 1{% if not loop.last %},
         {% endif %}
         {% endfor %}
         {% endif %}
