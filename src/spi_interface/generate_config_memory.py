@@ -18,13 +18,17 @@ def generate_config_memory(config_sizes_and_names: ConfigurationList):
         config_sizes_and_names (ConfigurationList): A list of tuples containing the name and size of each configuration variable. In human-readable format, the type is: [(bit_width [int/str] | (bit_width [int/str], count [int] | (max_index [int], start_index [int])), name, requires_reset)]
     """
 
-    # Take all bit_widths that are not integers and start with a letter
-    parameters = [x[0] for x in config_sizes_and_names if type(x[0]) is not int and x[0][0].isalpha()]
+    # Take all bit widths that are not integers
+    parameters = [x[0] for x in config_sizes_and_names if type(x[0]) is str] + \
+        [x[0][0] for x in config_sizes_and_names if type(x[0]) is list and type(x[0][0]) is str] + \
+            [x[0][1] for x in config_sizes_and_names if type(x[0]) is list and type(x[0][1]) is str]
 
     split_parameters = []
 
     # Find all '-' and '+' characters in each of the parameters, split these parameters and add them to the list
     for p in parameters:
+        p = p.replace(" ", "")
+
         if "-" in p:
             split_parameters.extend(p.split("-"))
         elif "+" in p:
@@ -41,11 +45,11 @@ def generate_config_memory(config_sizes_and_names: ConfigurationList):
     current_address = 0
 
     for i, (bit_width, name, _) in enumerate(config_sizes_and_names):
-        if type(bit_width) is tuple:
+        if type(bit_width) is list:
             end_point = bit_width[1]
             start_point = 0
 
-            if type(bit_width[1]) is tuple:
+            if type(bit_width[1]) is list:
                 end_point = bit_width[1][0]
                 start_point = bit_width[1][1]
 
@@ -58,6 +62,10 @@ def generate_config_memory(config_sizes_and_names: ConfigurationList):
             config_address_mapping.append((current_address, name, bit_width))
             config_start_address_mapping[name] = current_address
             current_address += 1
+
+
+    print(config_address_mapping)
+    print(config_start_address_mapping)
 
 
     with open(TEMPLATE_PATH) as t:
