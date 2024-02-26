@@ -63,11 +63,6 @@ def generate_config_memory(config_sizes_and_names: ConfigurationList):
             config_start_address_mapping[name] = current_address
             current_address += 1
 
-
-    print(config_address_mapping)
-    print(config_start_address_mapping)
-
-
     with open(TEMPLATE_PATH) as t:
         template = Template(t.read(),
                             trim_blocks=True, lstrip_blocks=True)
