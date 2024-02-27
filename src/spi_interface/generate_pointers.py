@@ -40,9 +40,12 @@ def generate_pointers(pointer_sizes_and_names: PointerList):
     for i, entry in enumerate(pointer_sizes_and_names_with_values):
         listed = list(entry)
 
-        if len(listed) == 1:
-            listed.insert(0, -1)
+        if len(listed) == 3 and type(listed[0]) is int or (type(listed[0]) is str and listed[0][0].isdigit()):
+            if listed[2] == True:
+                listed.insert(0, -1)
 
+            listed = listed[:2]
+    
         pointer_sizes_and_names_with_values[i] = listed
 
     with open(TEMPLATE_PATH) as t:
