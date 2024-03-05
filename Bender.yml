@@ -34,3 +34,5 @@ sources:
       - src/clock/frequency_divider_stage.v
       - src/clock/clock_divider.v
       - src/clock/ext_or_int_clock.v
+      - src/clock/custom_clock_generator.v
+      - src/clock/custom_clock_with_phase_generator.v
