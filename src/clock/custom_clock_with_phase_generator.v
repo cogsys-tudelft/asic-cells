@@ -21,7 +21,7 @@ module custom_clock_with_phase_generator
             clk_out <= 1'b0;
         // Make sure that the clock generator is not running unnecessarily
         end else if (enable) begin
-            if (counter == cycles) begin
+            if (counter == max_count) begin
                 counter <= 1; // Reset to 1 for the same reason as above
                 max_count <= (max_count == low_phase_cycles) ? high_phase_cycles : low_phase_cycles;
                 clk_out <= ~clk_out;
