@@ -1,0 +1,24 @@
+[project]
+name = "asic-cells"
+version = "0.0.1"
+authors = [
+  { name = "Douwe den Blanken" }
+]
+description = "Python code for a set of (System)Verilog modules that can be used in ASIC design and FPGA prototyping"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+keywords = ["spi", "aer", "clock", "tools", "utils", "fpga", "asic", "bridge", "verilog", "systemverilog", "hdl", "hardware", "hardware description language", "hardware design", "hardware design language", "asic", "asic design", "asic design language", "asic design flow", "asic design tools"]
+dependencies = []
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+"Homepage" = "https://github.com/cogsys-tudelft/asic-cells"
+"Bug Tracker" = "https://github.com/cogsys-tudelft/asic-cells/issues"
