@@ -12,7 +12,7 @@ Simply clone the repository and use `bender update` to install all dependencies.
 
 ### Python
 
-To install the basic driver code, use:
+To install the basic driver and hardware generation code, use:
 
 `pip install .`
 

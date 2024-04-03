@@ -1,4 +1,0 @@
-pytest==7.4.3
-cocotb==1.8.1
-cocotb-test==0.2.4
-Jinja2==3.1.2

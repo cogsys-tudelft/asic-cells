@@ -13,7 +13,9 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 keywords = ["spi", "aer", "clock", "tools", "utils", "fpga", "asic", "bridge", "verilog", "systemverilog", "hdl", "hardware", "hardware description language", "hardware design", "hardware design language", "asic", "asic design", "asic design language", "asic design flow", "asic design tools"]
-dependencies = []
+dependencies = [
+  'Jinja2==3.1.2'
+]
 
 [build-system]
 requires = ["setuptools"]

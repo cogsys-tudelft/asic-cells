@@ -28,3 +28,9 @@ results.xml
 
 # Verilator
 obj_dir
+
+# Python
+
+__pycache__
+*.pyc
+*.egg-info
