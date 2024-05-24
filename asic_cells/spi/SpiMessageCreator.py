@@ -109,7 +109,7 @@ class SpiMessageCreator:
             else:
                 messages.append(self.create_data_message(value))
 
-        return list(map(lambda x: int(x, 2), messages))
+        return messages
     
     def create_pointer_message(self, key: str):
         """Create a message to read from the pointer memory.
@@ -145,7 +145,7 @@ class SpiMessageCreator:
 
             start_address += len(chunk)
         
-        return list(map(lambda x: int(x, 2), messages))
+        return messages
     
     def create_read_memory_message(self, key: str, start_address: int, num_transactions: int):
         """Create a message to read from a memory.
