@@ -20,7 +20,7 @@ module pointers
 
         {% for bit_width, name in pointer_sizes_and_names %}
             {% if bit_width != -1 %}
-        output reg {% if bit_width != 1 %}[{{bit_width}}-1:0] {% endif %}{{name}}{{ "," if not loop.last }}
+        input {% if bit_width != 1 %}[{{bit_width}}-1:0] {% endif %}{{name}}{{ "," if not loop.last }}
             {% endif %}
         {% endfor %}
     );
