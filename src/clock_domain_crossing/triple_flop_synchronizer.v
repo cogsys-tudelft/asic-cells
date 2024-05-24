@@ -25,8 +25,6 @@ module triple_flop_synchronizer #(
         .out(in_sync)
     );
 
-    reg out;
-
     // Unfortunately, the approach below is the only way to create synthesizable
     // Verilog code. It is not possible to only generate the always @ (...) part.
     generate
