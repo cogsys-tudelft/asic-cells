@@ -1,5 +1,3 @@
-`include "frequency_divider_stage.v"
-
 /**
  * Clock divider that is posedge sensitive, with no output synchronization.
  */

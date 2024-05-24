@@ -53,6 +53,7 @@ module memory_manager #(
 
     // Check parameters ---------------------------------------------------------------------------
 
+`ifndef VERILATOR
     if (NUM_MESSAGES_IN_WORD != WORD_BIT_WIDTH / MESSAGE_BIT_WIDTH) begin
         // TODO: make memory manager also work for non-perfectly divisible widths
         ERROR__WIDTH_must_be_perfectly_divisible_by_MESSAGE_BIT_WIDTH a ();
@@ -61,6 +62,7 @@ module memory_manager #(
     end else if (START_ADDRESS_BIT_WIDTH < ADDRESS_BIT_WIDTH + BITS_FOR_WITHIN_ROW) begin
         ERROR__START_ADDRESS_BIT_WIDTH_must_be_at_least_ADDRESS_BIT_WIDTH_plus_BITS_FOR_WITHIN_ROW a ();
     end
+`endif
 
     // Wires --------------------------------------------------------------------------------------
 
