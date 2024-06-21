@@ -41,6 +41,9 @@ def generate_config_memory(config_sizes_and_names: ConfigurationList):
     # Remove all duplicates
     parameters = list(set(split_parameters))
 
+    # Remove all strings of numbers from the list of parameters
+    parameters = [p for p in parameters if not p.isdigit()]
+
     config_address_mapping = []
     config_start_address_mapping = {}
 
