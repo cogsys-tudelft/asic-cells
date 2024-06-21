@@ -25,7 +25,7 @@ def generate_config_memory(config_sizes_and_names: ConfigurationList):
 
     split_parameters = []
 
-    # Find all '-' and '+' characters in each of the parameters, split these parameters and add them to the list
+    # Find all '-', '+' and '*' characters in each of the parameters, split these parameters and add them to the list
     for p in parameters:
         p = p.replace(" ", "")
 
@@ -33,6 +33,8 @@ def generate_config_memory(config_sizes_and_names: ConfigurationList):
             split_parameters.extend(p.split("-"))
         elif "+" in p:
             split_parameters.extend(p.split("+"))
+        elif "*" in p:
+            split_parameters.extend(p.split("*"))
         else:
             split_parameters.append(p)
 
