@@ -6,9 +6,6 @@ from asic_cells.utils import chunk_list, to_binary_string
 
 
 def _compute_start_address(config_sizes_and_names: list):
-    if "config_sizes_and_names" in config_sizes_and_names:
-        warnings.warn("You likely forgot select the entry with key 'config_sizes_and_names' after loading the json configuration file into a dictionary")
-
     start_addresses = {}
 
     last_start = 0
@@ -20,7 +17,7 @@ def _compute_start_address(config_sizes_and_names: list):
 
         if type(entry_width) is list:
             if type(entry_width[1]) is list:
-                number_of_entries = entry_width[1][1] - entry_width[1][0] + 1
+                number_of_entries = entry_width[1][0] - entry_width[1][1]
             else:
                 number_of_entries = entry_width[1]
 
@@ -40,11 +37,13 @@ class SpiMessageCreator:
         self.pointer_sizes_and_names = pointer_sizes_and_names
         self.memory_sizes_and_names = memory_sizes_and_names
 
-        self._config_start_addresses = _compute_start_address(self.config_sizes_and_names)
+        if "config_sizes_and_names" in config_sizes_and_names:
+            warnings.warn("You likely forgot select the entry with key 'config_sizes_and_names' after loading the json configuration file into a dictionary")
 
         if "pointer_sizes_and_names" in pointer_sizes_and_names:
-            raise ValueError("You forgot select the entry with key 'pointer_sizes_and_names' after loading the json configuration file into a dictionary")
+            warnings.warn("You likely forgot to select the entry with key 'pointer_sizes_and_names' after loading the json configuration file into a dictionary")
 
+        self._config_start_addresses = _compute_start_address(self.config_sizes_and_names)
         self._pointer_addresses = dict(map(lambda x: (x[1][1], x[0]), enumerate(self.pointer_sizes_and_names)))
 
         memory_indices = range(len(self.memory_sizes_and_names))
@@ -70,6 +69,7 @@ class SpiMessageCreator:
         bin_read = to_binary_string(read * 1, 1)
         bin_code = to_binary_string(code, self.code_bit_width)
         bin_start_address = to_binary_string(start_address, self.address_bit_width)
+        print(int(bin_start_address, 2))
         bin_num_transactions = to_binary_string(num_transactions, self.num_transactions_bit_width)
 
         return bin_read + bin_code + bin_start_address + bin_num_transactions
