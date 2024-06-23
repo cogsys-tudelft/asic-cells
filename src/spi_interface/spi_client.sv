@@ -43,15 +43,13 @@ module spi_client #(
 
     // Check parameters ---------------------------------------------------------------------------
 
-`ifndef VERILATOR
     if (NumTransactionsBitWidth < 0) begin
-        ERROR__MESSAGE_BIT_WIDTH_must_be_at_least_CODE_BIT_WIDTH_plus_START_ADDRESS_BIT_WIDTH_plus_1 a ();
+        $fatal(1, "ERROR: MESSAGE_BIT_WIDTH must be at least CODE_BIT_WIDTH + START_ADDRESS_BIT_WIDTH + 1");
     end else if (2 ** $clog2(MESSAGE_BIT_WIDTH) != MESSAGE_BIT_WIDTH) begin
-        ERROR__MESSAGE_BIT_WIDTH_must_be_a_power_of_two a ();
+        $fatal(1, "ERROR: MESSAGE_BIT_WIDTH must be a power of two");
     end else if (NumTransactionsBitWidth > START_ADDRESS_BIT_WIDTH) begin
-        ERROR__NumTransactionsBitWidth_must_be_less_than_or_equal_to_START_ADDRESS_BIT_WIDTH a ();
+        $fatal(1, "ERROR: NumTransactionsBitWidth must be less than or equal to START_ADDRESS_BIT_WIDTH");
     end
-`endif
 
     // Registers ----------------------------------------------------------------------------------
 

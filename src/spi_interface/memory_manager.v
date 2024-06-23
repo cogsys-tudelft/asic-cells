@@ -45,47 +45,33 @@ module memory_manager #(
 
     // Local parameters ---------------------------------------------------------------------------
 
-    localparam REQUIRED_SHIFT = $clog2(MESSAGE_BIT_WIDTH);
-    localparam NUM_ZEROES = WORD_BIT_WIDTH - MESSAGE_BIT_WIDTH;
-    localparam NUM_MESSAGES_IN_WORD = (WORD_BIT_WIDTH + MESSAGE_BIT_WIDTH - 1) / MESSAGE_BIT_WIDTH;  // Round-up division
-    localparam BITS_FOR_WITHIN_ROW = $clog2(NUM_MESSAGES_IN_WORD);
-    localparam SHIFT_BIT_WIDTH = BITS_FOR_WITHIN_ROW + REQUIRED_SHIFT;
+    localparam RequiredShift = $clog2(MESSAGE_BIT_WIDTH);
+    localparam NumZeroes = WORD_BIT_WIDTH - MESSAGE_BIT_WIDTH;
+    localparam NumMessagesInWord = (WORD_BIT_WIDTH + MESSAGE_BIT_WIDTH - 1) / MESSAGE_BIT_WIDTH;  // Round-up division
+    localparam BitsForWithinRow = $clog2(NumMessagesInWord);
+    localparam ShiftBitWidth = BitsForWithinRow + RequiredShift;
 
     // Check parameters ---------------------------------------------------------------------------
 
-`ifndef VERILATOR
-    if (NUM_MESSAGES_IN_WORD != WORD_BIT_WIDTH / MESSAGE_BIT_WIDTH) begin
+    if (NumMessagesInWord != WORD_BIT_WIDTH / MESSAGE_BIT_WIDTH) begin
         // TODO: make memory manager also work for non-perfectly divisible widths
-        ERROR__WIDTH_must_be_perfectly_divisible_by_MESSAGE_BIT_WIDTH a ();
-    end else if (ADDRESS_BIT_WIDTH + BITS_FOR_WITHIN_ROW > START_ADDRESS_BIT_WIDTH) begin
-        ERROR__ADDRESS_BIT_WIDTH_plus_BITS_FOR_WITHIN_ROW_must_be_less_than_or_equal_to_START_ADDRESS_BIT_WIDTH a ();
-    end else if (START_ADDRESS_BIT_WIDTH < ADDRESS_BIT_WIDTH + BITS_FOR_WITHIN_ROW) begin
-        ERROR__START_ADDRESS_BIT_WIDTH_must_be_at_least_ADDRESS_BIT_WIDTH_plus_BITS_FOR_WITHIN_ROW a ();
+        $fatal(1, "ERROR: Width must be perfectly divisible by MESSAGE_BIT_WIDTH");
+    end else if (ADDRESS_BIT_WIDTH + BitsForWithinRow > START_ADDRESS_BIT_WIDTH) begin
+        $fatal(1, "ERROR: ADDRESS_BIT_WIDTH plus BitsForWithinRow must be less than or equal to START_ADDRESS_BIT_WIDTH");
+    end else if (START_ADDRESS_BIT_WIDTH < ADDRESS_BIT_WIDTH + BitsForWithinRow) begin
+        $fatal(1, "ERROR: START_ADDRESS_BIT_WIDTH must be at least ADDRESS_BIT_WIDTH plus BitsForWithinRow");
     end
-`endif
-
-    // Wires --------------------------------------------------------------------------------------
-
-    wire read_this_memory_sync;
-
-    wire [BITS_FOR_WITHIN_ROW-1:0] within_row_address;
-    wire [ADDRESS_BIT_WIDTH-1:0] row_address;
-    wire [SHIFT_BIT_WIDTH-1:0] amount_to_shift;
-
-    wire [NUM_ZEROES-1:0] zeroes;
-
-    wire [WORD_BIT_WIDTH-1:0] data_out_full;
 
     // Combinational logic ------------------------------------------------------------------------
 
     assign program_this_memory_new = program_memory_new && is_code_for_this_memory;
-    assign read_this_memory_sync = read_memory_sync && is_code_for_this_memory;
+    wire read_this_memory_sync = read_memory_sync && is_code_for_this_memory;
 
-    assign within_row_address = spi_address[BITS_FOR_WITHIN_ROW-1:0];
-    assign row_address = spi_address[BITS_FOR_WITHIN_ROW+ADDRESS_BIT_WIDTH-1:BITS_FOR_WITHIN_ROW];
-    assign amount_to_shift = {{REQUIRED_SHIFT{1'b0}}, within_row_address} << REQUIRED_SHIFT;
+    wire [BitsForWithinRow-1:0] within_row_address = spi_address[BitsForWithinRow-1:0];
+    wire [ADDRESS_BIT_WIDTH-1:0] row_address = spi_address[BitsForWithinRow+ADDRESS_BIT_WIDTH-1:BitsForWithinRow];
+    wire [ShiftBitWidth-1:0] amount_to_shift = {{RequiredShift{1'b0}}, within_row_address} << RequiredShift;
 
-    assign zeroes = {NUM_ZEROES{1'b0}};
+    wire [NumZeroes-1:0] zeroes = {NumZeroes{1'b0}};
 
     // Chip-select should be low when power-down is high
     assign chip_select = program_this_memory_new | read_this_memory_sync ? 1'b1 : (control_chip_select & ~global_power_down);
@@ -96,7 +82,7 @@ module memory_manager #(
     assign mask = program_this_memory_new ? {zeroes, {MESSAGE_BIT_WIDTH{1'b1}}} << amount_to_shift : control_mask;
 
     // Unfortunately can't do take [MESSAGE_BIT_WIDTH-1:0] bits together with the shifting in one line of code...
-    assign data_out_full = memory_data_out >> amount_to_shift;
+    wire [WORD_BIT_WIDTH-1:0] data_out_full = memory_data_out >> amount_to_shift;
     assign spi_data_out = data_out_full[MESSAGE_BIT_WIDTH-1:0];
 
 endmodule

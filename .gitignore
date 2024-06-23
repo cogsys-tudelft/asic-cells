@@ -1,6 +1,6 @@
 # Generated files
-src/spi_interface/pointers.v
-src/spi_interface/config_memory.sv
+**/pointers.v
+**/config_memory.sv
 
 # Output files
 *.vcd
@@ -34,3 +34,6 @@ obj_dir
 __pycache__
 *.pyc
 *.egg-info
+
+# Testing
+*.json

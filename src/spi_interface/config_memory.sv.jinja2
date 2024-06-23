@@ -45,14 +45,12 @@ module config_memory
                     {% endif %}
                 {% endif %}
             {% endfor %}
-        end else begin
-            if (config_data_ready) begin
-                case (current_config_address)
-                    {% for address, name, bit_width in config_address_mapping %}
-                    {{address}}: {{name}} <= config_spi_data_in{% if bit_width != 1 %}[{{bit_width}}-1:0]{% else %}[0]{% endif %};
-                    {% endfor %}
-                endcase
-            end
+        end else if (config_data_ready) begin
+            case (current_config_address)
+                {% for address, name, bit_width in config_address_mapping %}
+                {{address}}: {{name}} <= config_spi_data_in{% if bit_width != 1 %}[{{bit_width}}-1:0]{% else %}[0]{% endif %};
+                {% endfor %}
+            endcase
         end
     end
 endmodule
