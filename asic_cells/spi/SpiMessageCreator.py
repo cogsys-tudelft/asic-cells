@@ -69,7 +69,6 @@ class SpiMessageCreator:
         bin_read = to_binary_string(read * 1, 1)
         bin_code = to_binary_string(code, self.code_bit_width)
         bin_start_address = to_binary_string(start_address, self.address_bit_width)
-        print(int(bin_start_address, 2))
         bin_num_transactions = to_binary_string(num_transactions, self.num_transactions_bit_width)
 
         return bin_read + bin_code + bin_start_address + bin_num_transactions
