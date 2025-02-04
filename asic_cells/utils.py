@@ -1,3 +1,6 @@
+from typing import List
+
+
 def chunk_list(input_list: list, chunk_size: int):
     """Chunk a list into smaller lists of a given size.
 
@@ -27,3 +30,12 @@ def to_binary_string(value: int, n_bits: int):
     assert value < 2**n_bits, f"Value exceeds the maximum possible value for the given bit width (max: {2**n_bits-1})"
 
     return format(value, f"0{n_bits}b")
+
+
+def flatten_list_of_lists(matrix: List[List[int]]) -> List[int]:
+    flat_list = []
+
+    for row in matrix:
+        flat_list.extend(row)
+
+    return flat_list
