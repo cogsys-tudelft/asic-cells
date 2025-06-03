@@ -200,5 +200,5 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-Technische Universiteit Delft hereby disclaims all copyright interest in the program "chameleon" (hardware accelerator for few-shot and continual learning) written by the Authors(s).
+Technische Universiteit Delft hereby disclaims all copyright interest in the program "asic-cells" (a set of (System)Verilog modules that can be used in ASIC design and FPGA prototyping) written by the Authors(s).
 Lucas van Vliet, Dean of EEMCS
