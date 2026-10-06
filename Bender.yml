@@ -25,9 +25,6 @@ sources:
       - src/spi_interface/spi_clock_barrier_crossing.v
       - src/spi_interface/memory_manager.v
 
-      - src/sram/single_port_type_t_sram.sv
-      - src/sram/double_port_type_t_sram.sv
-
       - src/aer/high_speed_in_bus.v
       - src/aer/high_speed_out_bus.v
 
@@ -41,3 +38,11 @@ sources:
       - src/pipeline/double_delay_register.v
       - src/pipeline/delay_register.v
       - src/pipeline/wide_delay_register.v
+
+  # Behavioral SRAM models. Packages that provide their own single_port_type_t_sram and
+  # double_port_type_t_sram (e.g. mapped to SRAM macros) pass the custom_sram target
+  # to leave these out.
+  - target: all(rtl, not(custom_sram))
+    files:
+      - src/sram/single_port_type_t_sram.sv
+      - src/sram/double_port_type_t_sram.sv
