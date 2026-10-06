@@ -1,8 +1,6 @@
 `ifndef __DOUBLE_DELAY_REGISTER_V__
 `define __DOUBLE_DELAY_REGISTER_V__
 
-`include "delay_register.v"
-
 module double_delay_register (
     input clk,
     input rst,
