@@ -18,8 +18,8 @@ sources:
     files:
       - src/clock_domain_crossing/wide_double_flop_synchronizer.v
       - src/clock_domain_crossing/double_flop_synchronizer.v
-      - src/clock_domain_crossing/wide_double_delay_register.v
       - src/clock_domain_crossing/triple_flop_toggle_synchronizer.v
+      - src/clock_domain_crossing/triple_flop_synchronizer.v
 
       - src/spi_interface/spi_client.sv
       - src/spi_interface/spi_clock_barrier_crossing.v
@@ -36,3 +36,8 @@ sources:
       - src/clock/ext_or_int_clock.v
       - src/clock/custom_clock_generator.v
       - src/clock/custom_clock_with_phase_generator.v
+
+      - src/pipeline/wide_double_delay_register.v
+      - src/pipeline/double_delay_register.v
+      - src/pipeline/delay_register.v
+      - src/pipeline/wide_delay_register.v
